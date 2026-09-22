@@ -22,4 +22,3 @@ This project provides an **alternative RTC solution** tailored specifically for 
 *   *Function performed by:* **MartStartIV**
 
 ---
-*Feel free to contribute, fork, or adapt this script for other hardware variants!*
