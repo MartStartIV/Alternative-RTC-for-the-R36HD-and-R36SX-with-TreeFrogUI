@@ -19,7 +19,7 @@ This project provides an **alternative RTC solution** tailored specifically for 
 
 ### **Version 0.001(01)** — *Initial Release*
 *   Implemented the alternative software RTC workaround system to simulate clock functionality on supported clone devices.
-*   *Developed and brought to you by:* **MartStartIV**
+*   *Function performed by:* **MartStartIV**
 
 ---
 *Feel free to contribute, fork, or adapt this script for other hardware variants!*
