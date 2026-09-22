@@ -2,6 +2,7 @@
 # zhijack.sh for r36sx/hd — GENERATED from hijack/zhijack.tpl.sh by
 # build_release.sh. Unified for v1.4.0 compatibility with custom performance mods.
 #
+# Alternative RTC solution implemented by MartStartIV
 # Reached via stock boot: rkgame (verified, untouched) -> setting.xml autorun ->
 # libemu_tfhijack.so forks this script (rkgame stays alive, keeping the
 # cubevol gpio -> /tmp/joy_key input pipeline up). Everything device-specific
