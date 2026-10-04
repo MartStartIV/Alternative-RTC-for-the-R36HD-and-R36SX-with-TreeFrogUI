@@ -1,5 +1,5 @@
 #!/bin/sh
-# zhijack.sh for gb350 — GENERATED from hijack/zhijack.tpl.sh by
+# zhijack.sh for sf3000 — GENERATED from hijack/zhijack.tpl.sh by
 # build_release.sh. Do not edit on the SD; edit the template and regenerate.
 #
 # Reached via stock boot: rkgame (verified, untouched) -> setting.xml autorun ->
@@ -36,7 +36,7 @@ if [ -f /mnt/sdcard/log.txt ]; then
     LOG=/mnt/sdcard/log.txt
     mv "$LOG" "$LOG.prev" 2>/dev/null
     : > "$LOG"
-    echo "=== zhijack boot [gb350] $(date '+%H:%M:%S' 2>/dev/null) ===" >> "$LOG"
+    echo "=== zhijack boot [sf3000] $(date '+%H:%M:%S' 2>/dev/null) ===" >> "$LOG"
     sync
 else
     LOG=/dev/null
@@ -96,7 +96,7 @@ guardar_y_sincronizar_rtc() {
 if [ -f /mnt/sdcard/cubegm/tfupdate.sh ]; then
     cp /mnt/sdcard/cubegm/tfupdate.sh /tmp/tfupdate.sh 2>/dev/null
     if [ -f /tmp/tfupdate.sh ]; then
-        sh /tmp/tfupdate.sh gb350
+        sh /tmp/tfupdate.sh sf3000
         UPDATE_RC=$?
         if [ "$UPDATE_RC" = 10 ]; then
             echo "offline update installed; restarting launcher" >> "$LOG"
@@ -114,17 +114,17 @@ killall rkgame 2>/dev/null
 echo "icube frozen, rkgame killed" >> "$LOG"
 
 cat > /tmp/tfdevice.env <<EOF
-TF_DEVICE=GB350
-TF_PANEL_W=640
+TF_DEVICE=SF3000
+TF_PANEL_W=854
 TF_PANEL_H=480
 TF_UI_SCALE=150
-TF_ASPECT_NUM=4
-TF_ASPECT_DEN=3
-TF_ROTATE=0
+TF_ASPECT_NUM=16
+TF_ASPECT_DEN=9
+TF_ROTATE=90
 TF_PRESENT=dispframe
-TF_DRIVER=/mnt/sdcard/cubegm/driver_gb350.so
+TF_DRIVER=/mnt/sdcard/cubegm/driver_sf3000.so
 EOF
-export TF_DEVICE=GB350 TF_PANEL_W=640 TF_PANEL_H=480 TF_UI_SCALE=150
+export TF_DEVICE=SF3000 TF_PANEL_W=854 TF_PANEL_H=480 TF_UI_SCALE=150
 
 if [ "$TF_DEVICE" = SF3000 ] && [ -f /mnt/sdcard/cubegm/driver_sf3500.so ] && \
    [ "$(head -c4 /mnt/sdcard/cubegm/driver.so 2>/dev/null)" != "$(printf '\177ELF')" ]; then
@@ -159,10 +159,10 @@ sleep 0.5
 # Optional: disable the power-button sleep (FrogUI Settings -> "Disable Sleep",
 # default off, applies after restart). Live-patch every cubevol instance in RAM
 # so the on-disk binary stays byte-identical -> passes SF3500 boot verification.
-# The watcher also handles a genuine daemon crash/respawn. 0x406bd4:0xac62b758 0x406ecc:0xae02b758 0x406a00:0xac44b758 is the
+# The watcher also handles a genuine daemon crash/respawn.  is the
 # per-device set of validated sleep-arm text addresses (empty = device not
 # supported). Long-press power-off is a separate path, untouched.
-TF_NOSLEEP_ADDRS="0x406bd4:0xac62b758 0x406ecc:0xae02b758 0x406a00:0xac44b758"
+TF_NOSLEEP_ADDRS=""
 if [ -n "$TF_NOSLEEP_ADDRS" ] && grep -q '^disable_sleep=on' /mnt/sdcard/frogui/settings.txt 2>/dev/null; then
     echo 0 > /proc/sys/kernel/yama/ptrace_scope 2>/dev/null
     [ -f /mnt/sdcard/cubegm/nosleep ] && /mnt/sdcard/cubegm/nosleep -w $TF_NOSLEEP_ADDRS >/dev/null 2>&1 &
@@ -225,7 +225,9 @@ while true; do
             echo "rom stat: $(ls -l "$ROM_PATH" 2>/dev/null)" >> "$LOG"
             echo "device env: $(tr '\n' ' ' < /tmp/tfdevice.env 2>/dev/null)" >> "$LOG"
             echo "pre-game ps:" >> "$LOG"; ps >> "$LOG" 2>&1
-            
+            # Record the exact child executable/PID; stock rkgame and the
+            # TreeFrogUI child can otherwise produce indistinguishable driver
+            # messages in the shared log.
             "$BIN" "$CORE_PATH" "$ROM_PATH" >> /tmp/treefrog_ui.log 2>&1 &
             GAME_PID=$!
             GAME_EXE=$(readlink "/proc/$GAME_PID/exe" 2>/dev/null)
