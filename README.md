@@ -1,4 +1,4 @@
-# 🕒 Alternative RTC Solution for R36HD / R36SX
+# 🕒 Alternative RTC Solution for R36HD / R36SX, GB350,SF3000,SF3000HD,SF3100 and SF3500
 
 A software-based Real-Time Clock (RTC) workaround designed for clone handheld consoles lacking physical hardware.
 
